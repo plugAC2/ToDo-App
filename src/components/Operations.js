@@ -1,24 +1,25 @@
-import {getOperations} from "../api/operations";
+import {getOperations} from "../api/operationsByTask";
 import {useEffect, useState} from "react";
 
 export default function Operations({id}) {
 
     const [operations, setOperations] = useState([]);
 
-    function saveOperations(data) {
-        setOperations(data)
-    }
-
     useEffect(() => {
-        getOperations(id, x => saveOperations(x));
+        try {
+            getOperations(id, x => setOperations(x));
+        } catch (e) {
+            console.log("Operations not loaded properly. Details: " + e);
+        }
+
     }, [id]);
+
+    console.log(operations)
 
     return (
         <div>
             {operations.map((e, index) => {
-
                 const date = new Date(e.addedDate);
-
                 return (
                     <li key={e.id + index}>
                         <h3>Operation: {e.description}</h3>

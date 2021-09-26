@@ -5,18 +5,18 @@ import { KEY_API, URL_API } from "./const";
  * @param {string} id - ID of task
  * @param {function} successCallback - Function that saves incoming data
  */
-export const getOperations = async (id, successCallback) => {
+export const getOperations = async (successCallback) => {
     try {
-        const response = await fetch(`${URL_API}/tasks/${id}/operations`, {
+        const response = await fetch(`${URL_API}/operations`, {
             headers: {
                 Authorization: KEY_API,
-            },
+            }
         });
 
         const data = await response.json();
 
         if (data.error || typeof successCallback !== "function") {
-            throw new Error("Błąd!");
+            throw new Error("Not loaded!");
         }
 
         successCallback(data.data);

@@ -1,49 +1,40 @@
 import React, {useState} from "react";
 import Operations from "./Operations";
-import TaskEditForm from "./TaskEditForm";
+import {Link} from "react-router-dom";
 
-export default function TasksElements({tasks}) {
-
-    const [hideListShowForm, setHideListShowForm] = useState(false);
-    const [editedTaskId, setEditedTaskId] = useState("");
-
-    function renderEditForm(taskId) {
-        setHideListShowForm(true);
-        setEditedTaskId(taskId);
-    }
-
+export default function TasksElements({tasks, deleteTask}) {
 
     return (
         <div>
-            <ul hidden={hideListShowForm}>
-                {tasks.map(e => {
+            <ul>
+                {tasks.map((e, index) => {
 
-                    const date = new Date(e.addedDate);
+                    const date = new Date(e.addedDate).toUTCString();
 
                     return (
-                        <li key={e.id}>
-                            <h2>Subject: {e.title}</h2>
+                        <li key={"tasksList" + e.id + index}>
+                            <h2>Title: {e.title}</h2>
                             <h3>Description: {e.description}</h3>
                             <h4>State: {e.status}</h4>
-                            <h5>Task added: {date.getDay()}.{date.getMonth()}.{date.getFullYear()}r.</h5>
+                            <h5>Task added: {date}</h5>
                             <ol>
                                 <Operations id={e.id}/>
                             </ol>
+                            <Link to={`/tasks/operations/addOperation/${e.id}`}>
+                                <button>Add an operation</button>
+                            </Link>
                             <button>Finish</button>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <button onClick={() => renderEditForm(e.id)}>Edit</button>
-                            <button>Delete</button>
+                            <Link to={`/tasks/editTask/${e.id}`}>
+                                <button>Edit</button>
+                            </Link>
+
+                            <button onClick={() => deleteTask(e.id)}>Delete</button>
                             <br/>
                             <br/>
                         </li>
                     )
                 })}
             </ul>
-            <form hidden={!hideListShowForm}>
-                <TaskEditForm taskId={editedTaskId} renderEditForm={renderEditForm}/>
-            </form>
         </div>
     )
 }
