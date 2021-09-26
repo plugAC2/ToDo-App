@@ -23,3 +23,22 @@ export const getTasks = async (successCallback) => {
         console.log(err);
     }
 };
+
+export const postTask =  async (task) => {
+    try {
+        const response = await fetch(`${URL_API}/tasks`, {
+            method: "POST",
+            headers: {
+                Authorization: KEY_API,
+                "Content-Type": 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                title: task.title,
+                description: task.description,
+                status: task.status
+            })
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}

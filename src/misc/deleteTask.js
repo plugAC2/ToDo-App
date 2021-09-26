@@ -3,5 +3,6 @@ export default function deleteTask(tasks, id) {
         if (x.id !== id) {
             return x;
         }
+        return null;
     })
 }

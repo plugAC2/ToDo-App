@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
+import {postTask} from "../api/tasks";
 
 export default function NewTask({onNewTask}) {
 
@@ -7,14 +8,7 @@ export default function NewTask({onNewTask}) {
         title: "",
         description: "",
         status: "open",
-        addedDate: ""
-
     })
-
-    function getDate() {
-        const timeStamp = Date.now();
-        return new Date(timeStamp).toUTCString();
-    }
 
     function handleTaskForm(event) {
         setNewTask(prev => {
@@ -22,29 +16,32 @@ export default function NewTask({onNewTask}) {
                 {
                     ...prev,
                     [event.target.id]: event.target.value,
-                    addedDate: getDate()
                 }
             )
         })
     }
 
     function addTask() {
+        postTask(newTask);
         onNewTask(newTask);
     }
 
 
     return (
         <div>
-            <p>Title of a task: </p>
-            <input id="title" type="text" placeholder="Subject" value={newTask.title}
-                   onChange={(e) => handleTaskForm(e)}/>
-            <br/>____________________________________________<br/>
-            <p>Description of a task: </p>
-            <input id="description" type="text" placeholder="Description" value={newTask.description}
-                   onChange={(e) => handleTaskForm(e)}/>
-            <Link to='/tasks'>
-                <button onClick={() => addTask()}>Add task</button>
-            </Link>
+            <h2>New task</h2>
+            <form>
+                <p>Title of a task: </p>
+                <input id="title" type="text" placeholder="Subject" value={newTask.title}
+                       onChange={(e) => handleTaskForm(e)}/>
+                <br/>____________________________________________<br/>
+                <p>Description of a task: </p>
+                <input id="description" type="text" placeholder="Description" value={newTask.description}
+                       onChange={(e) => handleTaskForm(e)}/>
+                <Link to='/tasks'>
+                    <button onClick={() => addTask()}>Add task</button>
+                </Link>
+            </form>
         </div>
     )
 }

@@ -1,14 +1,13 @@
 import {getTasks} from "./api/tasks";
 import {useEffect, useState} from "react";
-import {BrowserRouter, Link, matchPath, Route} from "react-router-dom";
+import {BrowserRouter, Route} from "react-router-dom";
 import addNewTaskToTasks from "./misc/addNewTaskToTasks";
 import deleteTask from "./misc/deleteTask";
 
 import Home from "./components/Home";
-import TasksElements from "./components/TasksElements";
 import NewTask from "./components/NewTask";
 import TaskEditForm from "./components/TaskEditForm";
-import NewOperation from "./components/NewOperation";
+import Task from "./components/Task";
 
 function App() {
 
@@ -44,10 +43,14 @@ function App() {
                     <NewTask onNewTask={setNewTask}/>
                 </Route>
                 <Route exact path='/tasks'>
-                    <TasksElements tasks={tasks} deleteTask={handleDelete}/>
+                    {/*<TasksElements tasks={tasks} deleteTask={handleDelete}/>*/}
+                    {tasks.map(e => {
+                        return (
+                            <Task key={"tasks " + e.id} id={e.id} title={e.title} description={e.description} status={e.status} deleteTask={handleDelete}/>
+                        )
+                    })}
                 </Route>
                 <Route exact path='/tasks/editTask/:id' render={({match}) => <TaskEditForm tasks={tasks} taskId={match.params.id}/>}/>
-                <Route path='/tasks/operations/addOperation/:id' render={({match}) => <NewOperation taskId={match.params.id}/>}/>
             </BrowserRouter>
         </div>
     );

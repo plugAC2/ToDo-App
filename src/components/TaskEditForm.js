@@ -8,6 +8,7 @@ export default function TaskEditForm({tasks, taskId}) {
         if (element.id === taskId) {
             return element;
         }
+        return null;
     })[0];
 
 
